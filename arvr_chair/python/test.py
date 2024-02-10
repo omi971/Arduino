@@ -8,18 +8,17 @@ import sys
 import serial
 import time
 
+# Define the serial port name and baud rate
+serial_port = 'COM10'  # Change this to the appropriate serial port on your system
+baud_rate = 9600
+
 try:
-    # Define the serial port name and baud rate
-    serial_port = 'COM10'  # Change this to the appropriate serial port on your system
-    baud_rate = 9600
+    # Open serial port
+    ser = serial.Serial(serial_port, baud_rate, timeout=1)
 
 except Exception as e:
     print(f'Error: {e}')
     print('Port Secection Error')
-
-# Open serial port
-ser = serial.Serial(serial_port, baud_rate, timeout=1)
-
 
 # -------------------- Loading Screen --------------------
 class LoadingScreen(QWidget):
@@ -76,31 +75,41 @@ class Window(QMainWindow):
 
         self.buttonStart = QPushButton('Start', self)
         # self.buttonStart.move(285, 100)
-        self.buttonStart.move(button_pos_x, button_pos_y+100)
+        self.buttonStart.move(button_pos_x, button_pos_y + 100)
         self.buttonStart.clicked.connect(self.buttonStartClicked)
         self.buttonStart.setFixedSize(100, 50)
 
         self.buttonPause = QPushButton('Pause', self)
         # self.buttonPause.move(285, 200)
-        self.buttonPause.move(button_pos_x, button_pos_y+150)
+        self.buttonPause.move(button_pos_x, button_pos_y + 150)
         self.buttonPause.clicked.connect(self.buttonPauseClicked)
         self.buttonPause.setFixedSize(100, 50)
 
         self.buttonStop = QPushButton('Stop', self)
         # self.buttonStop.move(285, 300)
-        self.buttonStop.move(button_pos_x, button_pos_y+200)
+        self.buttonStop.move(button_pos_x, button_pos_y + 200)
         self.buttonStop.clicked.connect(self.buttonStopClicked)
         self.buttonStop.setFixedSize(100, 50)
 
-        # ---------------- input data -------------------------
-        self.input_field = QLineEdit(self)
-        self.input_field.move(250, 10)
-        self.input_field.resize(100, 30)
+        # ---------------- Com port input -------------------------
+        self.com_input = QLineEdit(self)
+        self.com_input.move(250, 10)
+        self.com_input.resize(100, 30)
 
         # create a button to print the input data
         self.print_button = QPushButton('Select Com Port', self)
         self.print_button.move(250, 50)
-        self.print_button.clicked.connect(self.printInput)
+        self.print_button.clicked.connect(self.printPort)
+
+        # ---------------- csv file input data -------------------------
+        self.csv_input = QLineEdit(self)
+        self.csv_input.move(250, 90)
+        self.csv_input.resize(100, 30)
+
+        # create a button to print the input data
+        self.print_button2 = QPushButton('Select CSV File', self)
+        self.print_button2.move(250, 125)
+        self.print_button2.clicked.connect(self.printCSV)
 
         # show all the widgets
         self.show()
@@ -147,10 +156,19 @@ class Window(QMainWindow):
         except Exception as e:
             print(f'Error in Button: {e}')
 
-    def printInput(self):
+    def printPort(self):
         # Get the text from the input field
-        input_text = self.input_field.text()
-        print("Input Text:", input_text)
+        input_text = self.com_input.text()
+
+        global serial_port
+        serial_port = str(input_text)
+        print(f'Serial Port: {serial_port}')
+        print("Com Port:", input_text)
+
+    def printCSV(self):
+        # Get the text from the input field
+        input_text = self.csv_input.text()
+        print("Selected CSV File:", input_text)
 
 
 if __name__ == "__main__":
