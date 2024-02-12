@@ -4,7 +4,7 @@ import time  # Import time module for sleep function
 
 # Tolerance threshold for joystick deviation
 DEV_THRESHOLD = 0.1  # Adjust as needed
-res = 200
+res = 10
 
 
 # Mapping function to convert joystick values to degrees
@@ -32,7 +32,7 @@ def csv_file_generate():
     print(f"Initialized joystick: {joystick.get_name()}")
 
     # Initialize CSV file
-    csv_file = open("new.csv", "w", newline='')
+    csv_file = open("new_1.csv", "w", newline='')
     csv_writer = csv.writer(csv_file)
     csv_writer.writerow(["Resolution", "time", "x", "y"])
 
