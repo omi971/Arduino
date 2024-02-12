@@ -1,15 +1,15 @@
 
 ////Left Motor
 const int potPin_left = A1;    // Analog input pin for the potentiometer
-//const int RPWMPin = 10;    // IBT-2 RPWM pin
-//const int LPWMPin = 11;    // IBT-2 LPWM pin
+const int RPWMPin = 10;    // IBT-2 RPWM pin
+const int LPWMPin = 11;    // IBT-2 LPWM pin
 
 ////Right Motor
 const int potPin_right = A0;    // Analog input pin for the potentiometer
-const int RPWMPin = 5;    // IBT-2 RPWM pin
-const int LPWMPin = 6;    // IBT-2 LPWM pin
+//const int RPWMPin = 5;    // IBT-2 RPWM pin
+//const int LPWMPin = 6;    // IBT-2 LPWM pin
 int motor_speed = 0;
-int max_motor_speed = 50;
+int max_motor_speed = 100;
 
 bool fwrd = false;
 bool back = false;
