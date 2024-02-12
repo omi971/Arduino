@@ -43,13 +43,13 @@ class Window(QMainWindow):
         self.label = QLabel(self)
 
         # ------------------- loading image  -------------------
-        self.pixmap = QPixmap('images//dubotech_logo.png')
+        self.pixmap = QPixmap('images//dubotech_logo_resized.png')
 
         # adding image to label
         self.label.setPixmap(self.pixmap)
 
         # Optional, resize label to image size
-        self.label.resize(self.pixmap.width(), self.pixmap.height())
+        self.label.resize(150, 84)
         # self.label.resize(100, 100)
 
         #  ------------------- create a button -------------------
@@ -106,6 +106,11 @@ class Window(QMainWindow):
 
         self.timer_label = QLabel("5", self)
         # self.timer_label.setGeometry(250, 80, 100, 40)
+        self.timer_label.move(port_button_x, port_button_y - 110)
+        font = self.timer_label.font()  # Get the current font
+        font.setPointSize(24)  # Set the font size to 24 points
+        self.timer_label.setFont(font)  # Apply the new font
+        self.timer_label.setAlignment(Qt.AlignCenter)  # Align text to the center
         self.timer_label.move(port_button_x, port_button_y - 110)
 
         # self.timer_start_button = QPushButton("Start Countdown", self)
