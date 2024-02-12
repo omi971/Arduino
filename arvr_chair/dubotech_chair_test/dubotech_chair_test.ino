@@ -1,4 +1,11 @@
-const int potPin = A0;    // Analog input pin for the potentiometer
+
+////Left Motor
+const int potPin_left = A1;    // Analog input pin for the potentiometer
+//const int RPWMPin = 10;    // IBT-2 RPWM pin
+//const int LPWMPin = 11;    // IBT-2 LPWM pin
+
+////Right Motor
+const int potPin_right = A0;    // Analog input pin for the potentiometer
 const int RPWMPin = 5;    // IBT-2 RPWM pin
 const int LPWMPin = 6;    // IBT-2 LPWM pin
 int motor_speed = 0;
@@ -57,8 +64,17 @@ void loop() {
     analogWrite(LPWMPin, 0);
   }
 
-  int currentPosition = analogRead(potPin);
-  int d_value = map(currentPosition, 0, 1023, 0, 270);
-  Serial.println(d_value);
+  int currentPosition_left = analogRead(potPin_left);
+  int d_value_left = map(currentPosition_left, 0, 1023, 0, 270);
+  Serial.print("Left ");
+  Serial.print(d_value_left);
+//  Serial.print('');
+//  delay(1000);
 
+  int currentPosition_right = analogRead(potPin_right);
+  int d_value_right = map(currentPosition_right, 0, 1023, 0, 270);
+  Serial.print("   Right ");
+  Serial.print(d_value_right);
+  Serial.println();
+//  delay(1000);
 }

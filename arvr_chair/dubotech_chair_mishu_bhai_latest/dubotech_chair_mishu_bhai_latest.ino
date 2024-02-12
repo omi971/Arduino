@@ -17,6 +17,7 @@ int right_stable = 84;
 int right_high = 17;
 int right_down = 150;
 
+// t-val ---> target value
 bool motorRotate_left(int t_val) {
   int currentPosition = analogRead(potPin_left);
   int d_value = map(currentPosition, 0, 1023, 0, 270);
@@ -296,110 +297,5 @@ void loop() {
       break;
     }
   }
-
-
-  //  while (1) {
-  //    Serial.println("frd e dukse");
-  //    if (motorRotate_left(left_high)) {
-  //      break;
-  //    }
-  //  }
-  //
-  //  while (1) {
-  //    Serial.println("frd e dukse");
-  //    if (motorRotate_right(right_high)) {
-  //      break;
-  //    }
-  //  }
-  //
-  //  //  back
-  //
-  //
-  //  while (1) {
-  //    Serial.println("down e dukse");
-  //    if (motorRotate_left(left_down)) {
-  //      break;
-  //    }
-  //  }
-  //
-  //  while (1) {
-  //    Serial.println("down e dukse");
-  //    if (motorRotate_right(right_down)) {
-  //      break;
-  //    }
-  //  }
-  //  //  stable
-  //  while (1) {
-  //    Serial.println("stable e dukse");
-  //    if (motorRotate_left(left_stable)) {
-  //      break;
-  //    }
-  //  }
-  //
-  //  while (1) {
-  //    Serial.println("stable e dukse");
-  //    if (motorRotate_right(right_stable)) {
-  //      break;
-  //    }
-  //  }
-  //  //  right
-  //  while (1) {
-  //    Serial.println("right e dukse");
-  //    if (motorRotate_left(left_high)) {
-  //      break;
-  //    }
-  //  }
-  //
-  //  while (1) {
-  //    Serial.println("right e dukse");
-  //    if (motorRotate_right(right_down)) {
-  //      break;
-  //    }
-  //  }
-  //
-  //  //  stable
-  //  while (1) {
-  //    Serial.println("stable e dukse");
-  //    if (motorRotate_left(left_stable)) {
-  //      break;
-  //    }
-  //  }
-  //
-  //  while (1) {
-  //    Serial.println("stable e dukse");
-  //    if (motorRotate_right(right_stable)) {
-  //      break;
-  //    }
-  //  }
-  //
-  //  //  left
-  //  while (1) {
-  //    Serial.println("left e dukse");
-  //    if (motorRotate_left(left_down)) {
-  //      break;
-  //    }
-  //  }
-  //
-  //  while (1) {
-  //    Serial.println("left e dukse");
-  //    if (motorRotate_right(right_high)) {
-  //      break;
-  //    }
-  //  }
-  //
-  //  //  stable
-  //  while (1) {
-  //    Serial.println("stable e dukse");
-  //    if (motorRotate_left(left_stable)) {
-  //      break;
-  //    }
-  //  }
-  //
-  //  while (1) {
-  //    Serial.println("stable e dukse");
-  //    if (motorRotate_right(right_stable)) {
-  //      break;
-  //    }
-  //  }
   delay(2000);
 }

@@ -6,12 +6,10 @@ import time  # Import time module for sleep function
 DEV_THRESHOLD = 0.1  # Adjust as needed
 res = 200
 
-
 # Mapping function to convert joystick values to degrees
 def map_to_degrees(value, min_value, max_value, min_degree, max_degree):
     normalized_value = (value - min_value) / (max_value - min_value)
     return min_degree + normalized_value * (max_degree - min_degree)
-
 
 def main():
     degrees_x = 0  # Default value
@@ -34,7 +32,7 @@ def main():
     # Initialize CSV file
     csv_file = open("new.csv", "w", newline='')
     csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(["Resolution", "time", "x", "y"])
+    csv_writer.writerow(["Resolution", "time", "x","y"])
 
     initial_right_x = joystick.get_axis(2)
     initial_right_y = joystick.get_axis(3)
@@ -87,7 +85,6 @@ def main():
     finally:
         pygame.quit()
         csv_file.close()
-
 
 if __name__ == "__main__":
     main()
