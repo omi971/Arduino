@@ -2,7 +2,7 @@ import csv
 
 # Define the path to your CSV file
 # csv_file_path = "your_csv_file.csv"
-csv_file_path = "csv_files/new_1.csv"
+csv_file_path = "csv_files/new_2.csv"
 
 
 # Initialize empty arrays to store the values from the third and fourth columns
@@ -28,12 +28,12 @@ with open(csv_file_path, newline='') as csvfile:
 # print("Values from column 4:", column_4_values)
 
 # Save the values from column 3 to a text file
-with open('column_3_values.txt', 'w') as file:
+with open('column_3_new_values.txt', 'w') as file:
     for value in column_3_values:
         file.write(str(value) + ',')
 
 # Save the values from column 4 to a text file
-with open('column_4_values.txt', 'w') as file:
+with open('column_4_new_values.txt', 'w') as file:
     for value in column_4_values:
         file.write(str(value) + ',')
 
