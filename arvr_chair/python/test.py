@@ -2,8 +2,11 @@
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtCore import QTimer, Qt, QObject, pyqtSignal
 import sys
+from io import StringIO
+
+from csv_to_arduino import csv_to_arduino
 
 import serial
 import time
@@ -15,7 +18,6 @@ baud_rate = 9600
 
 # CSV File Path
 path = 'C:\\Users\\Nazmul Haque Omi\\Desktop\\codes\\Arduino\\arvr_chair\\python\\csv_files\\new.csv'
-
 csv_name = 'new'
 
 try:
@@ -39,17 +41,14 @@ class Window(QMainWindow):
         # setting the geometry of window
         self.setGeometry(0, 0, 540, 720)
 
-        # creating label
-        self.label = QLabel(self)
-
         # ------------------- loading image  -------------------
+        # creating a image label
+        self.logo = QLabel(self)
         self.pixmap = QPixmap('images//dubotech_logo_resized.png')
-
         # adding image to label
-        self.label.setPixmap(self.pixmap)
-
+        self.logo.setPixmap(self.pixmap)
         # Optional, resize label to image size
-        self.label.resize(150, 84)
+        self.logo.setGeometry(15, 15, 150, 84)
         # self.label.resize(100, 100)
 
         #  ------------------- create a button -------------------
@@ -93,13 +92,24 @@ class Window(QMainWindow):
         self.print_button.clicked.connect(self.printPort)
 
         # ---------------- csv file input data -------------------------
+        self.baud_rate = QLineEdit(self)
+        self.baud_rate.move(port_button_x, port_button_y + 80)
+        self.baud_rate.resize(100, 30)
+
+        # create a button to print the input data
+        self.select_baud_rate = QPushButton('Select Baud Rate', self)
+        self.select_baud_rate.move(port_button_x, port_button_y + 120)
+        self.select_baud_rate.resize(120, 30)
+        self.select_baud_rate.clicked.connect(self.printCSV)
+
+        # ---------------- csv file input data -------------------------
         self.csv_input = QLineEdit(self)
-        self.csv_input.move(port_button_x, port_button_y + 80)
+        self.csv_input.move(port_button_x, port_button_y + 160)
         self.csv_input.resize(100, 30)
 
         # create a button to print the input data
         self.print_button2 = QPushButton('Select CSV File', self)
-        self.print_button2.move(port_button_x, port_button_y + 120)
+        self.print_button2.move(port_button_x, port_button_y + 200)
         self.print_button2.clicked.connect(self.printCSV)
 
         # ---------------- timer -------------------------
@@ -113,15 +123,18 @@ class Window(QMainWindow):
         self.timer_label.setAlignment(Qt.AlignCenter)  # Align text to the center
         self.timer_label.move(port_button_x, port_button_y - 110)
 
-        # self.timer_start_button = QPushButton("Start Countdown", self)
-        # self.timer_start_button.setGeometry(250, 120, 200, 40)
-        # self.timer_label.move(port_button_x, port_button_y+160)
-
-        # self.buttonStart.clicked.connect(self.start_countdown)
-
         self.countdown_value = 5
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_countdown)
+
+        # # Add QTextEdit widget to display console output
+        self.console_output = QTextEdit(self)
+        self.console_output.setGeometry(50, 300, 400, 300)
+        self.console_output.move(50, 400)
+        self.console_output.setReadOnly(True)  # Set read-only mode to prevent editing
+
+        # # Redirect console output to QTextEdit
+        # sys.stdout = EmittingStream(textWritten=self.normal_output_written)
 
         # show all the widgets
         self.show()
@@ -139,72 +152,24 @@ class Window(QMainWindow):
             self.buttonStartClicked()
 
     def buttonStartClicked(self):
-        # print(f'Countdown Value: {self.countdown_value}')
-        # if self.countdown_value == 0:
-        print('Start Button Pressed.!!')
+        print('Start Button Clicked')
+        global path
+        global serial_port
+        global baud_rate
 
-        # ------------------ Sending X, Y Data to Arduino ------------------------
-        # Open the CSV file in read mode
-        with open(path, "r") as file:
-            # Create a CSV reader object
-            csv_reader = csv.reader(file)
+        path = 'C:\\Users\\Nazmul Haque Omi\\Desktop\\codes\\Arduino\\arvr_chair\\python\\csv_files\\new.csv'
+        serial_port = 'COM13'
+        baud_rate = 9600
 
-            # Initialize serial communication with Arduino
-
-            # Iterate over each row in the CSV file
-            for row in csv_reader:
-                # Process each row as needed
-                x_val = row[2]
-                y_val = row[3]
-
-                send = str(x_val + "," + y_val)
-                print(f'Sending data: {send}')
-
-                # Send data to Arduino
-                ser.write(send.encode())  # Convert string to bytes before sending
-
-                # Read response from Arduino
-                response = ser.readline().decode().strip()  # Read the serial data and decode it
-                print(f'Response from Arduino: {response}')
-
-        # try:
-        #     command = 'S'  # Command to turn on an LED, adjust as needed
-        #     ser.write(command.encode())
-        #     # print("Command sent:", command.decode())
-        #
-        #     data = ser.readline()  # Read bytes from serial port
-        #     decoded_data = data.decode()  # Decode bytes to string
-        #     print(f'Response: {decoded_data}')
-        # except Exception as e:
-        #     print(f'Error in Button: {e}')
+        csv_to_arduino(path, serial_port, baud_rate)
 
     def buttonPauseClicked(self):
         print('PauseButton Pressed.!!')
 
-        # try:
-        #     command = 'P'  # Command to turn on an LED, adjust as needed
-        #     ser.write(command.encode())
-        #     # print("Command sent:", command.decode())
-        #
-        #     data = ser.readline()  # Read bytes from serial port
-        #     decoded_data = data.decode()  # Decode bytes to string
-        #     print(f'Response: {decoded_data}')
-        # except Exception as e:
-        #     print(f'Error in Button: {e}')
-
     def buttonStopClicked(self):
         print('Stop Button Pressed.!!')
-
-        # try:
-        #     command = 'X'  # Command to turn on an LED, adjust as needed
-        #     ser.write(command.encode())
-        #     # print("Command sent:", command.decode())
-        #
-        #     data = ser.readline()  # Read bytes from serial port
-        #     decoded_data = data.decode()  # Decode bytes to string
-        #     print(f'Response: {decoded_data}')
-        # except Exception as e:
-        #     print(f'Error in Button: {e}')
+        time.sleep(5)
+        exit()
 
     def printPort(self):
         # Get the text from the input field
@@ -215,8 +180,7 @@ class Window(QMainWindow):
         print('---------------------')
         print('COM' + serial_port)
         print('---------------------')
-
-        # print("Com Port:", input_text)
+        
 
     def printCSV(self):
         # Get the text from the input field
@@ -228,7 +192,7 @@ class Window(QMainWindow):
         path = 'C:\\Users\\Nazmul Haque Omi\\Desktop\\codes\\Arduino\\arvr_chair\\python\\csv_files\\' + csv_name + '.csv'
 
         print('---------------------')
-        print(path)
+        print(f"CSV File Path: {path}")
         print('---------------------')
 
 
